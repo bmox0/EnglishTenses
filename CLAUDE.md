@@ -47,6 +47,7 @@ pnpm format           # prettier --write src README.md CLAUDE.md
 - The UI is in English; only sentence translations, `why`, glosses and the Russian chain are Russian.
 - `TimelineCanvas` never mutates its `scene`, `camera` or `selected` props: every handler builds a fresh value and emits `update:*`; the redraw always comes back through the prop.
 - Sentence ids (`data/sentences/*.jsonl`) may change freely — only the recent-ids list in localStorage refers to them, and a stale id there is simply skipped.
+- `export.ts` loads its SVG as a `data:` URL, not a blob URL, and this is not a style choice: Chrome taints the canvas for any SVG image holding a `<foreignObject>`, so a blob URL makes `toBlob` throw and the tense card stops saving. The timeline export would survive the change; the card would not.
 
 ## Style
 
