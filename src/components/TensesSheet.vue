@@ -4,6 +4,7 @@ import {computed, ref} from "vue"
 import {SENTENCES, VERBS} from "../domain/data"
 import {withForm} from "../domain/sentences"
 import {ASPECTS, ASPECT_INFO, TENSE_INFO, TIMES, TIME_INFO, tenseName} from "../domain/tenses"
+import {saveCardPng} from "../timeline/export"
 import {pictureMarkup} from "../timeline/picture"
 import {wavePath} from "../timeline/svg"
 
@@ -12,6 +13,8 @@ import type {Aspect, GridTense, Time} from "../domain/tenses"
 const emit = defineEmits<{close: []}>()
 
 const selected = ref<GridTense | null>(null)
+const detailEl = ref<HTMLElement | null>(null)
+const saving = ref(false)
 
 function gridTense(time: Time, aspect: Aspect): GridTense {
   return `${time}.${aspect}` as GridTense
@@ -46,6 +49,20 @@ const detail = computed(() => {
     .filter((example): example is {before: string; form: string; after: string} => example !== null)
   return {tense, time, aspect, info, picture, examples}
 })
+
+async function savePng() {
+  const element = detailEl.value
+  const tense = selected.value
+  if (!element || !tense || saving.value) return
+  saving.value = true
+  try {
+    await saveCardPng(element, tenseName(tense))
+  } catch (error) {
+    console.error("Could not save the tense card as a PNG", error)
+  } finally {
+    saving.value = false
+  }
+}
 
 const LEGEND: {label: string; svg: string}[] = [
   {label: "event", svg: `<circle cx="15" cy="7" r="4" style="fill:var(--ink)"/>`},
@@ -93,8 +110,21 @@ const LEGEND: {label: string; svg: string}[] = [
     <div class="legend">
       <span v-for="item in LEGEND" :key="item.label"><svg viewBox="0 0 30 14" aria-hidden="true" v-html="item.svg"></svg>{{ item.label }}</span>
     </div>
-    <div v-if="detail" class="detail">
-      <h3>{{ tenseName(detail.tense) }}</h3>
+    <div v-if="detail" ref="detailEl" class="detail">
+      <div class="detail-top">
+        <h3>{{ tenseName(detail.tense) }}</h3>
+        <button
+          type="button"
+          class="btn-line"
+          data-noexport
+          :disabled="saving"
+          title="Download this card as a PNG"
+          aria-label="Download this card as a PNG"
+          @click="savePng"
+        >
+          PNG
+        </button>
+      </div>
       <div class="formula">{{ detail.info.formula }}</div>
       <div v-html="detail.picture"></div>
       <p lang="ru" style="margin: 8px 0 0">{{ detail.info.gloss }}</p>

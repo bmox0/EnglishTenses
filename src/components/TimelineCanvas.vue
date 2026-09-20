@@ -6,6 +6,7 @@ import type {Action, Classified, Placement, Scene} from "../domain/geometry"
 import {tenseName} from "../domain/tenses"
 import type {Camera} from "../timeline/camera"
 import {fitCamera, inView, toWorld, zoomAt} from "../timeline/camera"
+import {saveTimelinePng} from "../timeline/export"
 import type {CanvasMode, ScenePreview, Tint} from "../timeline/render"
 import {gridBackground, sceneMarkup} from "../timeline/render"
 
@@ -48,6 +49,7 @@ const width = ref(0)
 const height = ref(0)
 const placing = ref(false)
 const panning = ref(false)
+const saving = ref(false)
 const hover = ref<{x: number; y: number} | null>(null)
 const markup = ref("")
 
@@ -164,6 +166,27 @@ function clear() {
   emit("update:scene", {moment: props.scene.moment, actions: []})
   emit("update:selected", null)
   setPlacing(false)
+}
+
+async function savePng() {
+  if (saving.value) return
+  saving.value = true
+  try {
+    await saveTimelinePng({
+      scene: props.scene,
+      tintOf: tint,
+      selected: props.selected,
+      momentLabel: props.momentLabel,
+      showMoment: props.showMoment,
+      hideLabels: props.hideLabels,
+      formOf: props.formOf ?? null,
+      ghost: props.ghost,
+    })
+  } catch (error) {
+    console.error("Could not save the timeline as a PNG", error)
+  } finally {
+    saving.value = false
+  }
 }
 
 function zoomBy(factor: number) {
@@ -506,6 +529,9 @@ defineExpose({morphTo, fit})
       <span>{{ zoomPercent }}</span>
       <button type="button" aria-label="Zoom in" @click="zoomBy(1.25)">+</button>
       <button type="button" @click="fit">Fit</button>
+      <button type="button" :disabled="saving" title="Download the timeline as a PNG" aria-label="Download the timeline as a PNG" @click="savePng">
+        PNG
+      </button>
     </div>
     <div class="sk-hint">{{ hint }}</div>
   </div>

@@ -759,3 +759,22 @@ select {
   font-size: 12px;
   color: var(--muted);
 }
+
+.detail-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.zoombar button:disabled,
+.btn-line:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.zoombar button:disabled:hover {
+  background: transparent;
+}
+.btn-line:disabled:hover {
+  color: var(--muted);
+  border-color: var(--line);
+}

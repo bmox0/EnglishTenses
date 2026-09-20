@@ -25,11 +25,12 @@ pnpm format           # prettier --write src README.md CLAUDE.md
   - `sandbox.ts`: the sandbox's own data (`SANDBOX_VERBS`, `SUBJECTS`, `MOMENTS`) and texts (`sandboxSentence`, `chainRu`), plus `defaultSandboxScene`, `morphTarget`.
   - `storage.ts`: `KeyValueStore`, `loadSaved`/`writeSaved`, `STORAGE_KEY`.
   - `data.ts`: `VERBS` and `SENTENCES`, loaded from `data/*.jsonl` with `import.meta.glob`.
-- `src/timeline/`: pure view math and markup, no Vue. Tests sit next to `camera.ts` and `render.ts`.
+- `src/timeline/`: pure view math and markup, no Vue. Tests sit next to `camera.ts`, `render.ts` and `export.ts`.
   - `camera.ts`: `fitCamera`, `zoomAt`, `toWorld`, `inView`, `leftInset`.
   - `picture.ts`: `pictureMarkup` — one tense's static picture, style `big` or `mini`.
   - `render.ts`: `sceneMarkup` — the live canvas's whole SVG markup, `gridBackground`.
   - `svg.ts`: shared SVG primitives — `esc`, `wavePath`, `arrowHead`, `arcSVG`.
+  - `export.ts`: the PNG downloads — `saveTimelinePng`, `saveCardPng`, and the pure parts they rest on (`exportFrame`, `pngName`, `resolveVars`, `THEME_TOKENS`).
 - `src/store/`: the reactive state built on the domain, each a factory plus an injection key, following EnglishWords' `createStudy`.
   - `sandbox.ts`: `createSandbox()`/`useSandbox()` — the sandbox's scene, camera, selection and choice.
   - `quiz.ts`: `createQuiz()`/`useQuiz()` — a test's questions, results and the canvas scene it shows.
