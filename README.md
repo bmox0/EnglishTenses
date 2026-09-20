@@ -44,6 +44,7 @@ Pick a verb, a subject and a reference moment from three selects — there's no 
 | **A Russian reasoning chain** | `От меня (now) момент «she called» — в прошлом. От момента действие: уже сделано. → Past Perfect`                                                                                         |
 | **Add your own action**       | `+ Action` (or `A`), then click the timeline; double-click turns a point into a repeated habit (a row of dots) and back                                                                   |
 | **The Tenses sheet**          | All 12 grid tenses as small pictures with their formula; click one for the big picture, the Russian gloss, the markers and up to 3 bank sentences                                         |
+| **Save the picture**          | `PNG` in the zoom bar downloads the timeline cropped to the picture — no panel, no empty canvas — named after its tense, like `past-continuous.png`                                       |
 
 ### Test: 12 questions, two shapes
 
@@ -107,7 +108,7 @@ Everything is read off two things: **where the moment sits relative to now**, an
 
 Time × Aspect gives the 12 grid tenses (`past.simple` … `future.perfcont`); `past.future` (Future in the Past) is the one tense outside the grid. Positions snap onto the moment or onto now within a small pixel tolerance, so an exact match doesn't need pixel-perfect dragging.
 
-The **Tenses** button opens the same thing as a reference: all 12 pictures in one grid, the legend that decodes them, and a detail panel for whichever one you click.
+The **Tenses** button opens the same thing as a reference: all 12 pictures in one grid, the legend that decodes them, and a detail panel for whichever one you click. That panel has its own `PNG` button, so a whole tense card — picture, formula, Russian gloss, markers and examples — saves as one image for your notes.
 
 ![The Tenses sheet: 12 tense pictures in a 3x4 grid with their formulas, the legend, and the Past Perfect detail with its big picture, Russian gloss, markers and bank sentences](./media/sheet.png)
 
