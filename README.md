@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./public/icon-192.png" width="72" alt="English Tenses logo" />
+</p>
+
 <h1 align="center">English Tenses</h1>
 
 <p align="center">
@@ -21,7 +25,10 @@
     <img src="https://img.shields.io/github/actions/workflow/status/bmox0/EnglishTenses/deploy.yml?label=deploy" alt="Deploy status" />
   </a>
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" />
+  <img src="https://img.shields.io/badge/13%20tenses-on%20one%20timeline-5CC48D" alt="13 tenses on one timeline" />
 </p>
+
+![English Tenses: the sandbox with a segment crossing the moment, read as Past Continuous, and the panel naming it with an example sentence and a Russian chain](./media/ui.png)
 
 ## Features
 
@@ -50,6 +57,12 @@ Every test mixes two question types at random, never asks the same tense more th
 Every answer, right or wrong, ends with a one-line Russian **why**. The end screen shows your score and every mistake, each one openable to see its picture again, with a **New test** button that starts 12 fresh questions sharing none of this test's sentences.
 
 **Open in sandbox** carries any answered question's picture straight into the sandbox, so you can keep playing with it there.
+
+![A missed gap question: the right form highlighted green, the picked one red, and both tenses drawn on the timeline](./media/test.png)
+
+<p align="center">
+  <em>Name another tense and you see it drawn: yours in red, the sentence's in green.</em>
+</p>
 
 ## Keys
 
@@ -93,6 +106,10 @@ Everything is read off two things: **where the moment sits relative to now**, an
 **"After"** — an action placed after the moment has no aspect of its own: it reads as **Future in the Past** (`would + V`) when the moment is in the past, and as plain **Future Simple** otherwise, because nothing later than a future moment has a name of its own in this scheme.
 
 Time × Aspect gives the 12 grid tenses (`past.simple` … `future.perfcont`); `past.future` (Future in the Past) is the one tense outside the grid. Positions snap onto the moment or onto now within a small pixel tolerance, so an exact match doesn't need pixel-perfect dragging.
+
+The **Tenses** button opens the same thing as a reference: all 12 pictures in one grid, the legend that decodes them, and a detail panel for whichever one you click.
+
+![The Tenses sheet: 12 tense pictures in a 3x4 grid with their formulas, the legend, and the Past Perfect detail with its big picture, Russian gloss, markers and bank sentences](./media/sheet.png)
 
 ## Adding sentences
 
