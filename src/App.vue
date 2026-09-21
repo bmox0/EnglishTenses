@@ -6,6 +6,7 @@ import QuizSummary from "./components/QuizSummary.vue"
 import SandboxPanel from "./components/SandboxPanel.vue"
 import TensesSheet from "./components/TensesSheet.vue"
 import TimelineCanvas from "./components/TimelineCanvas.vue"
+import {usePanel} from "./composables/usePanel"
 import {useTheme} from "./composables/useTheme"
 import {VERBS} from "./domain/data"
 import {formsOf} from "./domain/forms"
@@ -13,6 +14,7 @@ import {SNAP_PX} from "./domain/geometry"
 import {SUBJECTS, momentLabelOf} from "./domain/sandbox"
 import {useSandbox} from "./store/sandbox"
 import {useQuiz} from "./store/quiz"
+import {EDGE_INSET} from "./timeline/camera"
 
 import type {Classified} from "./domain/geometry"
 import type {GridTense} from "./domain/tenses"
@@ -21,8 +23,10 @@ import type {Tint} from "./timeline/render"
 const sandbox = useSandbox()
 const quiz = useQuiz()
 const {isDark, setTheme} = useTheme()
+const {collapsed, togglePanel} = usePanel()
 
 const canvas = ref<InstanceType<typeof TimelineCanvas> | null>(null)
+const inset = computed(() => (collapsed.value ? EDGE_INSET : undefined))
 const sheetOpen = ref(false)
 const tab = ref<"sandbox" | "test">("sandbox")
 
@@ -140,6 +144,7 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown))
     mode="sandbox"
     :moment-label="momentLabel"
     :form-of="formOf"
+    :inset="inset"
     @morph="sandbox.state.morphing = $event"
   />
   <TimelineCanvas
@@ -155,8 +160,9 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown))
     :show-moment="testShowMoment"
     :moment-label="testMomentLabel"
     :ghost="quiz.state.ghost"
+    :inset="inset"
   />
-  <div class="hud">
+  <div class="hud" :class="{collapsed}">
     <div class="hud-tabs">
       <button type="button" :class="{on: tab === 'sandbox'}" @click="tab = 'sandbox'">Sandbox</button>
       <button type="button" :class="{on: tab === 'test'}" @click="tab = 'test'">Test</button>
@@ -166,15 +172,26 @@ onBeforeUnmount(() => document.removeEventListener("keydown", onKeydown))
       </button>
       <button type="button" class="btn-line" @click="sheetOpen = true">Tenses</button>
       <button type="button" title="Theme" @click="setTheme(!isDark)">◐</button>
+      <button
+        type="button"
+        :title="collapsed ? 'Show the panel' : 'Hide the panel'"
+        :aria-label="collapsed ? 'Show the panel' : 'Hide the panel'"
+        :aria-expanded="!collapsed"
+        @click="togglePanel"
+      >
+        {{ collapsed ? "▾" : "▴" }}
+      </button>
     </div>
-    <SandboxPanel v-if="tab === 'sandbox'" @morph="onMorph" />
-    <template v-else>
-      <QuizPanel @show-me="onShowMe" @open-sandbox="onOpenSandbox" />
-      <QuizSummary v-if="!quiz.current.value" />
-    </template>
-    <div v-if="tab === 'sandbox'" class="legend2">
-      <span><i class="lg-now"></i><b>now</b> — when you are speaking. It never moves.</span>
-      <span><i class="lg-r"></i><b>the moment</b> — the time the sentence is about. Drag it.</span>
+    <div v-show="!collapsed">
+      <SandboxPanel v-if="tab === 'sandbox'" @morph="onMorph" />
+      <template v-else>
+        <QuizPanel @show-me="onShowMe" @open-sandbox="onOpenSandbox" />
+        <QuizSummary v-if="!quiz.current.value" />
+      </template>
+      <div v-if="tab === 'sandbox'" class="legend2">
+        <span><i class="lg-now"></i><b>now</b> — when you are speaking. It never moves.</span>
+        <span><i class="lg-r"></i><b>the moment</b> — the time the sentence is about. Drag it.</span>
+      </div>
     </div>
   </div>
   <TensesSheet v-if="sheetOpen" @close="sheetOpen = false" />

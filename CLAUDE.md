@@ -35,7 +35,7 @@ pnpm format           # prettier --write src README.md CLAUDE.md
   - `sandbox.ts`: `createSandbox()`/`useSandbox()` — the sandbox's scene, camera, selection and choice.
   - `quiz.ts`: `createQuiz()`/`useQuiz()` — a test's questions, results and the canvas scene it shows.
 - `src/components/`: `TimelineCanvas` (the draggable canvas; modes `sandbox`/`task`/`view`), `SandboxPanel`, `TenseMatrix` (the 3×4 mini table), `TensesSheet`, `QuizPanel`, `QuizSummary`.
-- `src/composables/`: `useTheme` (light/dark, persisted under `english-tenses:dark`).
+- `src/composables/`: `useTheme` (light/dark, persisted under `english-tenses:dark`), `usePanel` (the floating panel folded to its tab row, persisted under `english-tenses:panel`).
 - `src/styles.css`: every style. Colour tokens live on `:root` and `:root.dark`.
 - `data/verbs.jsonl`: the verb bank, five forms per verb.
 - `data/sentences/`: the sentence bank, `<NN>-<set>.jsonl` files loaded in name order (currently `01-core.jsonl`).
@@ -43,7 +43,7 @@ pnpm format           # prettier --write src README.md CLAUDE.md
 ## Invariants
 
 - The geometry rules (`classify`, `canonical`, `snap`) live only in `src/domain/geometry.ts`, ported from the prototype's `classifyEvent`. A change there needs a test in `geometry.test.ts`.
-- localStorage keys: `english-tenses:v1` holds the quiz's recently shown sentence ids (`storage.ts`'s `STORAGE_KEY`), `english-tenses:dark` holds the theme. The origin `bmox0.github.io` is shared with other sites, so every key keeps the `english-tenses:` prefix. A change to the saved shape needs a new `version` and a migration in `loadSaved`.
+- localStorage keys: `english-tenses:v1` holds the quiz's recently shown sentence ids (`storage.ts`'s `STORAGE_KEY`), `english-tenses:dark` holds the theme, `english-tenses:panel` whether the panel is folded. The origin `bmox0.github.io` is shared with other sites, so every key keeps the `english-tenses:` prefix. A change to the saved shape needs a new `version` and a migration in `loadSaved`.
 - The UI is in English; only sentence translations, `why`, glosses and the Russian chain are Russian.
 - `TimelineCanvas` never mutates its `scene`, `camera` or `selected` props: every handler builds a fresh value and emits `update:*`; the redraw always comes back through the prop.
 - Sentence ids (`data/sentences/*.jsonl`) may change freely — only the recent-ids list in localStorage refers to them, and a stale id there is simply skipped.

@@ -45,6 +45,7 @@ Pick a verb, a subject and a reference moment from three selects — there's no 
 | **Add your own action**       | `+ Action` (or `A`), then click the timeline; double-click turns a point into a repeated habit (a row of dots) and back                                                                   |
 | **The Tenses sheet**          | All 12 grid tenses as small pictures with their formula; click one for the big picture, the Russian gloss, the markers and up to 3 bank sentences                                         |
 | **Save the picture**          | `PNG` in the zoom bar downloads the timeline cropped to the picture — no panel, no empty canvas — named after its tense, like `past-continuous.png`                                       |
+| **Fold the panel**            | `▴` beside the theme button folds the panel down to its tab row and frees the canvas; Fit then uses the whole width. It stays folded across reloads                                       |
 
 ### Test: 12 questions, two shapes
 
@@ -160,7 +161,7 @@ Pushing to `main` deploys to GitHub Pages through `.github/workflows/deploy.yml`
 
 ## Privacy and data
 
-There is no account, no server and no analytics. The only things kept in your browser are the ids of your last few tests' sentences (`english-tenses:v1`, so the next test doesn't repeat them) and your theme choice (`english-tenses:dark`).
+There is no account, no server and no analytics. The only things kept in your browser are the ids of your last few tests' sentences (`english-tenses:v1`, so the next test doesn't repeat them), your theme choice (`english-tenses:dark`) and whether the panel is folded (`english-tenses:panel`).
 
 ## Requirements
 

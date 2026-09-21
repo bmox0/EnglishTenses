@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest"
 
-import {fitCamera, inView, leftInset, toWorld, zoomAt} from "./camera"
+import {EDGE_INSET, fitCamera, inView, leftInset, toWorld, zoomAt} from "./camera"
 
 const xs = [0, -260, -480, -120]
 const width = 1400
@@ -27,6 +27,15 @@ describe("fitCamera", () => {
   it("clamps k to 0.2 for a huge span and to 1.6 for a tiny one", () => {
     expect(fitCamera([0, -100000], width, height).k).toBeCloseTo(0.2)
     expect(fitCamera([0, 10], width, height).k).toBeCloseTo(1.6)
+  })
+
+  it("uses the panel's inset by default and the edge inset once the panel is folded", () => {
+    expect(fitCamera(xs, width, height)).toEqual(fitCamera(xs, width, height, leftInset(width)))
+    const folded = fitCamera(xs, width, height, EDGE_INSET)
+    const left = Math.min(...xs.map((x) => x * folded.k + folded.tx))
+    expect(left).toBeLessThan(470)
+    expect(left).toBeGreaterThanOrEqual(EDGE_INSET + 20)
+    expect(folded.k).toBeGreaterThan(fitCamera(xs, width, height).k)
   })
 })
 
@@ -84,5 +93,11 @@ describe("inView", () => {
     const camera = fitCamera(xs, width, height)
     expect(inView(xs, camera, width)).toBe(true)
     expect(inView([100000], camera, width)).toBe(false)
+  })
+
+  it("counts the space behind a folded panel as in view", () => {
+    const camera = {k: 1, tx: 0, ty: 0}
+    expect(inView([100], camera, width)).toBe(false)
+    expect(inView([100], camera, width, EDGE_INSET)).toBe(true)
   })
 })

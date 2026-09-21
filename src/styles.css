@@ -779,3 +779,7 @@ select {
   color: var(--muted);
   border-color: var(--line);
 }
+
+.hud.collapsed .hud-tabs {
+  margin-bottom: 0;
+}

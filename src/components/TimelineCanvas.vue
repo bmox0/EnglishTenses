@@ -22,6 +22,7 @@ const props = withDefaults(
     tintOf?: (c: Classified) => Tint
     formOf?: (c: Classified) => string
     ghost?: Placement | null
+    inset?: number
   }>(),
   {momentLabel: "", showMoment: true, hideLabels: false, ghost: null},
 )
@@ -434,10 +435,10 @@ function morphTo(target: Placement, options?: {fit?: boolean}) {
   const xs = [target.moment, target.s, target.e]
   const others = props.scene.actions.filter((item) => item.id !== action.id).flatMap((item) => [item.s, item.e])
   const camTarget = options?.fit
-    ? fitCamera(xs, width.value, height.value)
-    : inView(xs, camera, width.value)
+    ? fitCamera(xs, width.value, height.value, props.inset)
+    : inView(xs, camera, width.value, props.inset)
       ? {...camera}
-      : fitCamera([...xs, ...others], width.value, height.value)
+      : fitCamera([...xs, ...others], width.value, height.value, props.inset)
   const from = {moment: props.scene.moment, s: action.s, e: action.e, k: camera.k, tx: camera.tx, ty: camera.ty}
   stopAnim()
   morphing = true
@@ -454,7 +455,7 @@ function morphTo(target: Placement, options?: {fit?: boolean}) {
 function fit() {
   const camera = props.camera
   if (!camera || !width.value || !height.value) return
-  const camTarget = fitCamera(fitXs(), width.value, height.value)
+  const camTarget = fitCamera(fitXs(), width.value, height.value, props.inset)
   const from = {k: camera.k, tx: camera.tx, ty: camera.ty}
   stopAnim()
   runAnim((q) => {
@@ -465,7 +466,7 @@ function fit() {
 
 watchEffect(() => {
   if (props.camera || !width.value || !height.value) return
-  emit("update:camera", fitCamera(fitXs(), width.value, height.value))
+  emit("update:camera", fitCamera(fitXs(), width.value, height.value, props.inset))
 })
 
 watchEffect(draw)
